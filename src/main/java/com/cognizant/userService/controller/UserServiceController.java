@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.userService.Service.UserService;
+import com.cognizant.userService.dto.UserRegisterResponseDTO;
 import com.cognizant.userService.entity.UserServiceEntity;
 
 import jakarta.validation.Valid;
@@ -27,9 +28,9 @@ public class UserServiceController {
     private UserService userService;
 
     @PostMapping("/create_user")
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserServiceEntity user) {
-        userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created");
+    public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody UserServiceEntity user) {
+        UserRegisterResponseDTO userResponse = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
     @GetMapping("/get_all_user")
@@ -48,7 +49,8 @@ public class UserServiceController {
     }
 
     @PutMapping("/update_user/{id}")
-    public ResponseEntity<UserServiceEntity> updateUser(@PathVariable Long id, @Valid @RequestBody UserServiceEntity user) {
+    public ResponseEntity<UserServiceEntity> updateUser(@PathVariable Long id,
+            @Valid @RequestBody UserServiceEntity user) {
         UserServiceEntity updated = userService.updateUser(id, user);
         if (updated != null) {
             return ResponseEntity.ok(updated);
