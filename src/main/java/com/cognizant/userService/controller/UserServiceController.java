@@ -60,9 +60,9 @@ public class UserServiceController {
     }
 
     @DeleteMapping("/delete_user/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted");
+    public ResponseEntity<UserServiceEntity> deleteUser(@PathVariable Long id) {
+        UserServiceEntity user = userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @ExceptionHandler(Exception.class)
