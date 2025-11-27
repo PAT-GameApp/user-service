@@ -1,16 +1,55 @@
 package com.cognizant.userService.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cognizant.userService.Repository.UserRepository;
 import com.cognizant.userService.dto.UserRegisterResponseDTO;
-import com.cognizant.userService.entity.UserServiceEntity;
+import com.cognizant.userService.entity.User;
 
-public interface UserService {
-    UserRegisterResponseDTO createUser(UserServiceEntity user);
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
 
-    java.util.List<UserServiceEntity> getAllUsers();
+    public UserRegisterResponseDTO createUser(User user) {
+        user = userRepository.save(user);
+        UserRegisterResponseDTO response = UserRegisterResponseDTO.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
+                .department(user.getDepartment())
+                .officeLocation(user.getOfficeLocation())
+                .build();
 
-    UserServiceEntity getUserById(Long id);
+        return response;
+    }
 
-    UserServiceEntity updateUser(Long id, UserServiceEntity user);
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-    UserServiceEntity deleteUser(Long id);
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
+
+    public User updateUser(Long id, User updatedUser) {
+        if (userRepository.existsById(id)) {
+            updatedUser.setUserId(id);
+            return userRepository.save(updatedUser);
+        }
+        return null;
+    }
+
+    public User deleteUser(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        userRepository.delete(user);
+        return user;
+    }
 }

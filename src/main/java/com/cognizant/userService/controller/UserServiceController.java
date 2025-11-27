@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.userService.Service.UserService;
 import com.cognizant.userService.dto.UserRegisterResponseDTO;
-import com.cognizant.userService.entity.UserServiceEntity;
+import com.cognizant.userService.entity.User;
 
 import jakarta.validation.Valid;
 
@@ -28,19 +28,19 @@ public class UserServiceController {
     private UserService userService;
 
     @PostMapping("/create_user")
-    public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody UserServiceEntity user) {
+    public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody User user) {
         UserRegisterResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
     @GetMapping("/get_all_user")
-    public ResponseEntity<List<UserServiceEntity>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/get_user_by_id/{id}")
-    public ResponseEntity<UserServiceEntity> getUserById(@PathVariable Long id) {
-        UserServiceEntity user = userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
@@ -49,9 +49,9 @@ public class UserServiceController {
     }
 
     @PutMapping("/update_user/{id}")
-    public ResponseEntity<UserServiceEntity> updateUser(@PathVariable Long id,
-            @Valid @RequestBody UserServiceEntity user) {
-        UserServiceEntity updated = userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+            @Valid @RequestBody User user) {
+        User updated = userService.updateUser(id, user);
         if (updated != null) {
             return ResponseEntity.ok(updated);
         } else {
