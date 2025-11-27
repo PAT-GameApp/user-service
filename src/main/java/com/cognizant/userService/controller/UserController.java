@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
-public class UserServiceController {
+public class UserController {
     @Autowired
     private UserService userService;
 
@@ -60,8 +60,8 @@ public class UserServiceController {
     }
 
     @DeleteMapping("/delete_user/{id}")
-    public ResponseEntity<UserServiceEntity> deleteUser(@PathVariable Long id) {
-        UserServiceEntity user = userService.deleteUser(id);
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+        User user = userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
