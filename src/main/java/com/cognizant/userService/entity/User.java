@@ -14,10 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Entity
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_service")
 public class User {

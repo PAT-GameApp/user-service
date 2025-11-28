@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.userService.Service.UserService;
+import com.cognizant.userService.dto.UserRegisterRequestDTO;
 import com.cognizant.userService.dto.UserRegisterResponseDTO;
 import com.cognizant.userService.entity.User;
 
@@ -28,7 +29,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create_user")
-    public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody UserRegisterRequestDTO user) {
         UserRegisterResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }

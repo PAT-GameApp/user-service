@@ -7,16 +7,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.userService.Repository.UserRepository;
+import com.cognizant.userService.dto.UserRegisterRequestDTO;
 import com.cognizant.userService.dto.UserRegisterResponseDTO;
 import com.cognizant.userService.entity.User;
+import com.cognizant.userService.exception.DuplicateEmailException;
+import com.cognizant.userService.exception.DuplicatePhoneNumberException;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserRegisterResponseDTO createUser(User user) {
+    public UserRegisterResponseDTO createUser(UserRegisterRequestDTO request) {
+        // check if email exists
+        if (request.getEmail() != null && userRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateEmailException("Email already exists: " + request.getEmail());
+        }
+
+        // check if phone number exists
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().trim().isEmpty()
+                && userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new DuplicatePhoneNumberException("Phone number already exists: " + request.getPhoneNumber());
+        }
+        User user = User.builder()
+                .userName(request.getUserName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .role(request.getRole())
+                .department(request.getDepartment())
+                .officeLocation(request.getOfficeLocation())
+                .build();
+
         user = userRepository.save(user);
+
         UserRegisterResponseDTO response = UserRegisterResponseDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
@@ -26,7 +49,6 @@ public class UserService {
                 .department(user.getDepartment())
                 .officeLocation(user.getOfficeLocation())
                 .build();
-
         return response;
     }
 
