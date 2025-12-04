@@ -28,18 +28,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create_user")
+    @PostMapping
     public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody UserRegisterRequestDTO user) {
         UserRegisterResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
-    @GetMapping("/get_all_user")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/get_user_by_id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         if (user != null) {
@@ -49,7 +49,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update_user/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id,
             @Valid @RequestBody User user) {
         User updated = userService.updateUser(id, user);
@@ -60,7 +60,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete_user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         User user = userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
