@@ -28,13 +28,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<UserRegisterResponseDTO> createUser(@Valid @RequestBody UserRegisterRequestDTO user) {
         UserRegisterResponseDTO userResponse = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
