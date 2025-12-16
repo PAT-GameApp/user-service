@@ -35,7 +35,7 @@ public class UserService {
                 .phoneNumber(request.getPhoneNumber())
                 .role(request.getRole())
                 .department(request.getDepartment())
-                .officeLocation(request.getOfficeLocation())
+                .locationId(request.getLocationId())
                 .build();
 
         user = userRepository.save(user);
@@ -47,7 +47,7 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
                 .department(user.getDepartment())
-                .officeLocation(user.getOfficeLocation())
+                .locationId(user.getLocationId())
                 .build();
         return response;
     }
