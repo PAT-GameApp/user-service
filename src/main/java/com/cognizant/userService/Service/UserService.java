@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.userService.Repository.UserRepository;
@@ -54,6 +57,14 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    public List<User> getAllUsers(Sort sort) {
+        return sort == null || sort.isUnsorted() ? userRepository.findAll() : userRepository.findAll(sort);
     }
 
     public User getUserById(Long id) {
