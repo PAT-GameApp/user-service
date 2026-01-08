@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import com.cognizant.userService.Service.UserService;
 import com.cognizant.userService.dto.UserRegisterRequestDTO;
@@ -64,18 +67,17 @@ public class UserControllerTest {
 
     @Test
     void getAllUsers_shouldReturnOk() {
-        User user1 = new User();
-        user1.setUserId(1L);
-        User user2 = new User();
-        user2.setUserId(2L);
-        List<User> users = Arrays.asList(user1, user2);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<User> userPage = new PageImpl<>(List.of(new User(), new User()));
+        when(userService.getAllUsers(pageRequest)).thenReturn(userPage);
 
-        when(userService.getAllUsers()).thenReturn(users);
-
-        ResponseEntity<List<User>> response = userController.getAllUsers();
+        ResponseEntity<?> response = userController.getAllUsers(0, 10, null, null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size());
+        @SuppressWarnings("unchecked")
+        List<User> users = (List<User>) response.getBody();
+        assertNotNull(users);
+        assertEquals(2, users.size());
     }
 
     @Test

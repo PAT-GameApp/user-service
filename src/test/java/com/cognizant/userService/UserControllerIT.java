@@ -1,4 +1,4 @@
-package com.cognizant.userservice;
+package com.cognizant.userService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
